@@ -31,6 +31,12 @@ jobs:
           version: 1.0
       - name: Expose clang-format 16 as clang-format
         run: sudo ln -sf /usr/bin/clang-format-16 /usr/bin/clang-format
+      - name: Assert clang-format is installed and runnable
+        run: |
+          set -euo pipefail
+          test -x /usr/bin/clang-format-16
+          command -v clang-format
+          clang-format --version
       - name: Compile and run C tests
         run: |
           set -euo pipefail
