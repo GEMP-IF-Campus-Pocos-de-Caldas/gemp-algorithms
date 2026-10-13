@@ -59,6 +59,8 @@ Cada algoritmo fica em uma folha com a convenção
 grafos/
 └── dijkstra/
     ├── README.md
+    ├── c/dijkstra.c
+    ├── c/test_dijkstra.c
     ├── cpp/dijkstra.cpp
     ├── cpp/test_dijkstra.cpp
     ├── python/dijkstra.py
@@ -92,6 +94,7 @@ folha deve declarar explicitamente o marcador:
 - Python
 - C
 - Java
+- C++
 
 > A lista de linguagens será atualizada conforme novas implementações forem adicionadas ao repositório.
 
