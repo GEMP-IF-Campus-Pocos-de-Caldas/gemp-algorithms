@@ -58,6 +58,26 @@ def is_kebab(name: str) -> bool:
     return bool(_KEBAB_RE.fullmatch(name))
 
 
+def to_pascal(name: str) -> str:
+    return "".join(part.capitalize() for part in name.split("-"))
+
+
+def test_filename(lang: str, algorithm: str) -> str:
+    if lang == "java":
+        return f"Test{to_pascal(algorithm)}.java"
+    if lang == "cpp":
+        return f"test_{algorithm}.cpp"
+    if lang == "c":
+        return f"test_{algorithm}.c"
+    if lang == "python":
+        return f"test_{algorithm}.py"
+    raise ValueError(f"linguagem desconhecida: {lang}")
+
+
+def has_sem_verificacao(readme_text: str) -> bool:
+    return "sem verificação" in readme_text
+
+
 def _find_header_fields_with_lines(text: str) -> tuple[dict[str, str], dict[str, int]]:
     fields: dict[str, str] = {}
     lines: dict[str, int] = {}
@@ -110,8 +130,12 @@ def validate_repo(root: Path) -> list[str]:
             relleaf = leaf.relative_to(root)
             if not is_kebab(leaf.name):
                 errors.append(f"{relleaf}: folha deve ser kebab-case")
-            if not (leaf / "README.md").is_file():
+            readme = leaf / "README.md"
+            if not readme.is_file():
                 errors.append(f"{relleaf}: README.md ausente")
+                readme_text = ""
+            else:
+                readme_text = readme.read_text(encoding="utf-8")
             for lang, ext in LANGUAGE_DIRS.items():
                 lang_dir = leaf / lang
                 if not lang_dir.is_dir():
@@ -124,6 +148,12 @@ def validate_repo(root: Path) -> list[str]:
                     if path.name.startswith("test_") or path.name.startswith("Test"):
                         continue
                     errors.extend(_validate_code_file(root, path))
+                if not has_sem_verificacao(readme_text):
+                    expected = test_filename(lang, leaf.name)
+                    if not (lang_dir / expected).is_file():
+                        errors.append(
+                            f"{lang_dir.relative_to(root)}: teste ausente: {expected}"
+                        )
     return errors
 
 
