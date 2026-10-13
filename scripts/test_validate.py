@@ -86,6 +86,24 @@ def test_present_test_passes(tmp_path):
     assert validate.validate_repo(tmp_path) == []
 
 
+def test_single_line_block_header_is_parsed():
+    assert validate.find_header_fields("/* Nome: X */") == {"Nome": "X"}
+
+
+def test_single_line_block_date_is_not_falsely_rejected():
+    assert validate.find_header_fields("/* Data: 2026-10-12 */") == {"Data": "2026-10-12"}
+
+
+def test_dash_marker_is_accepted():
+    assert validate.find_header_fields("- Nome: Y") == {"Nome": "Y"}
+
+
+def test_main_rejects_non_directory(tmp_path, capsys):
+    missing = tmp_path / "nao-existe"
+    assert validate.main([str(missing)]) == 1
+    assert "inválido" in capsys.readouterr().out
+
+
 def test_to_pascal_and_java_test_filename():
     assert validate.to_pascal("busca-binaria") == "BuscaBinaria"
     assert validate.test_filename("java", "busca-binaria") == "TestBuscaBinaria.java"

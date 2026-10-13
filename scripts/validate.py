@@ -45,7 +45,9 @@ _HEADER_RE = re.compile(
     r"^\s*[-*]?\s*(Nome|Categoria|Descrição|Complexidade|Autor|Data|Uso/Referência):\s*(.+)$"
 )
 
-_COMMENT_PREFIX_RE = re.compile(r"^\s*(?://+|#+|\*+|/\*+)\s*")
+_COMMENT_PREFIX_RE = re.compile(r"^\s*(?://+|#+|\*+|/\*+|-+)\s*")
+
+_COMMENT_SUFFIX_RE = re.compile(r"\s*\*+/\s*$")
 
 _DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
@@ -82,7 +84,8 @@ def _find_header_fields_with_lines(text: str) -> tuple[dict[str, str], dict[str,
     fields: dict[str, str] = {}
     lines: dict[str, int] = {}
     for number, line in enumerate(text.splitlines()[:30], start=1):
-        match = _HEADER_RE.match(_COMMENT_PREFIX_RE.sub("", line))
+        content = _COMMENT_SUFFIX_RE.sub("", _COMMENT_PREFIX_RE.sub("", line))
+        match = _HEADER_RE.match(content)
         if match:
             key, value = match.group(1), match.group(2).strip()
             fields[key] = value
@@ -157,6 +160,9 @@ def validate_repo(root: Path) -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     root = Path(argv[0]) if argv else repo_root()
+    if not root.is_dir():
+        print(f"erro: caminho inválido: {root}")
+        return 1
     errors = validate_repo(root)
     for error in errors:
         print(error)
