@@ -53,3 +53,31 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+
+opencode*.*
+
+# Environment
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Java
+*.class
+target/
+build/
+
+# C/C++
+bin/
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
