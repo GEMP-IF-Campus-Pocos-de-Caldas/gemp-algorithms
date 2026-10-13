@@ -151,9 +151,7 @@ def validate_repo(root: Path) -> list[str]:
                 if not has_sem_verificacao(readme_text):
                     expected = test_filename(lang, leaf.name)
                     if not (lang_dir / expected).is_file():
-                        errors.append(
-                            f"{lang_dir.relative_to(root)}: teste ausente: {expected}"
-                        )
+                        errors.append(f"{lang_dir.relative_to(root)}: teste ausente: {expected}")
     return errors
 
 
