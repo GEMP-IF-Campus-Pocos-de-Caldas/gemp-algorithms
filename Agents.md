@@ -46,6 +46,9 @@ gemp-algorithms/
 ├── docs/
 ├── scripts/
 ├── .github/
+├── .clang-format
+├── .gitignore
+├── pyproject.toml
 ├── Agents.md
 ├── README.md
 └── LICENSE
@@ -63,6 +66,8 @@ Each algorithm lives in a **leaf** with the layout
 grafos/
 └── dijkstra/
     ├── README.md
+    ├── c/dijkstra.c
+    ├── c/test_dijkstra.c
     ├── cpp/dijkstra.cpp
     ├── cpp/test_dijkstra.cpp
     ├── python/dijkstra.py

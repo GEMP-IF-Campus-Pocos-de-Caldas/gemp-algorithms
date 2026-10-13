@@ -115,7 +115,7 @@ git clone https://github.com/[usuario]/gemp-algorithms.git
 ### 2. Crie uma branch para sua contribuição
 
 ```bash
-git checkout -b meu-algoritmo
+git checkout -b feat/grafos-dijkstra
 ```
 
 ### 3. Adicione sua implementação
@@ -125,7 +125,7 @@ Siga os padrões de organização descritos neste README.
 ### 4. Faça o commit das alterações
 
 ```bash
-git commit -m "Adiciona implementação do [algoritmo]"
+git commit -m "feat(grafos): adiciona dijkstra em cpp"
 ```
 
 ### 5. Envie um Pull Request
